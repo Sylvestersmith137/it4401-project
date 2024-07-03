@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Details</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .details { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Book Details</h1>
+    <div id="bookDetails"></div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        var bookId = new URLSearchParams(window.location.search).get('id');
+        var apiUrl = `https://www.googleapis.com/books/v1/volumes/${bookId}?key=AIzaSyBdRSww1N9e2w8nPHUfpm9_qdN4d3lWBbA`;
+
+        $.getJSON(apiUrl, function(data) {
+            var book = data.volumeInfo;
+            $('#bookDetails').html(`
+                <div class="details">
+                    <h2>${book.title}</h2>
+                    <p><strong>Author(s):</strong> ${book.authors ? book.authors.join(', ') : 'Unknown'}</p>
+                    <p><strong>Published Date:</strong> ${book.publishedDate ? book.publishedDate : 'Unknown'}</p>
+                    <p><strong>Publisher:</strong> ${book.publisher ? book.publisher : 'Unknown'}</p>
+                    <p><strong>Page Count:</strong> ${book.pageCount ? book.pageCount : 'Unknown'}</p>
+                    <p><strong>Description:</strong> ${book.description ? book.description : 'No description available.'}</p>
+                    <img src="${book.imageLinks ? book.imageLinks.thumbnail : ''}" alt="Cover Image" style="max-height: 200px;">
+                </div>
+            `);
+        }).fail(function() {
+            $('#bookDetails').html('Failed to retrieve book details. Please check your API key and network connection.');
+        });
+    });
+    </script>
+</body>
+</html>

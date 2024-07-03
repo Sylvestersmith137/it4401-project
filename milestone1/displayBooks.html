@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display Books</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .book { margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+    <h1>Book List</h1>
+    <div id="books"></div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Sample JSON data
+            var books = [
+                { "title": "JavaScript: The Good Parts", "author": "Douglas Crockford", "id": "001" },
+                { "title": "Eloquent JavaScript", "author": "Marijn Haverbeke", "id": "002" }
+            ];
+
+            // Dynamically display the books
+            books.forEach(function(book) {
+                $('#books').append(
+                    '<div class="book"><strong>' + book.title + '</strong> by ' + book.author +
+                    ' - <a href="bookDetails.html?id=' + book.id + '">Details</a></div>'
+                );
+            });
+        });
+    </script>
+</body>
+</html>

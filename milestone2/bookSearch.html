@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Search</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .book { margin-bottom: 10px; }
+        .title { font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Search for Books</h1>
+    <input type="text" id="searchQuery" placeholder="Enter search terms">
+    <button onclick="searchBooks()">Search</button>
+    <div id="results"></div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    function searchBooks() {
+        var query = document.getElementById('searchQuery').value;
+        var apiUrl = 'https://www.googleapis.com/books/v1/volumes?q=' + encodeURIComponent(query) + '&key=AIzaSyBdRSww1N9e2w8nPHUfpm9_qdN4d3lWBbA';
+
+        $.getJSON(apiUrl, function(data) {
+            $('#results').empty();
+            if (data.items) {
+                data.items.forEach(function(item) {
+                    $('#results').append(`<div class="book">
+                        <span class="title">${item.volumeInfo.title}</span> by ${item.volumeInfo.authors ? item.volumeInfo.authors.join(', ') : 'Unknown'}
+                        <br><a href="bookDetails.html?id=${item.id}">View Details</a>
+                    </div>`);
+                });
+            } else {
+                $('#results').html('No books found.');
+            }
+        }).fail(function() {
+            $('#results').html('Failed to retrieve data. Please check your API key and network connection.');
+        });
+    }
+    </script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Details</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Book Details</h1>
+    <div id="bookDetails"></div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Simulate book details JSON data
+            var bookDetails = {
+                "001": { "title": "JavaScript: The Good Parts", "author": "Douglas Crockford", "year": "2008", "publisher": "O'Reilly Media" },
+                "002": { "title": "Eloquent JavaScript", "author": "Marijn Haverbeke", "year": "2014", "publisher": "No Starch Press" }
+            };
+
+            // Get book ID from URL
+            var urlParams = new URLSearchParams(window.location.search);
+            var bookId = urlParams.get('id');
+
+            // Display the details
+            var book = bookDetails[bookId];
+            if (book) {
+                $('#bookDetails').html(
+                    '<strong>Title:</strong> ' + book.title + '<br>' +
+                    '<strong>Author:</strong> ' + book.author + '<br>' +
+                    '<strong>Year:</strong> ' + book.year + '<br>' +
+                    '<strong>Publisher:</strong> ' + book.publisher
+                );
+            } else {
+                $('#bookDetails').text('Book not found.');
+            }
+        });
+    </script>
+</body>
+</html>

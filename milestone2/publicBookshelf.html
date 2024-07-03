@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favorites Bookshelf</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .book { margin-bottom: 10px; border: 1px solid #ccc; padding: 10px; border-radius: 5px; }
+        .title { font-weight: bold; }
+        .author { color: #555; }
+        img { max-height: 150px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Favorites Bookshelf</h1>
+    <div id="bookshelf"></div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        var userId = '109902538791449712756';
+        var shelfId = '0'; 
+        var apiKey = 'AIzaSyBdRSww1N9e2w8nPHUfpm9_qdN4d3lWBbA';
+
+        var apiUrl = `https://www.googleapis.com/books/v1/users/${userId}/bookshelves/${shelfId}/volumes?key=${apiKey}`;
+
+        $.getJSON(apiUrl, function(data) {
+            if (data.items) {
+                data.items.forEach(function(item) {
+                    var book = item.volumeInfo;
+                    var authors = book.authors ? book.authors.join(', ') : 'Unknown Author';
+                    $('#bookshelf').append(`
+                        <div class="book">
+                            <img src="${book.imageLinks ? book.imageLinks.thumbnail : 'http://placehold.it/100x100'}" alt="${book.title}">
+                            <div class="title">${book.title}</div>
+                            <div class="author">by ${authors}</div>
+                            <a href="${book.infoLink}" target="_blank">More Info</a>
+                        </div>
+                    `);
+                });
+            } else {
+                $('#bookshelf').html('No books found on this shelf.');
+            }
+        }).fail(function() {
+            $('#bookshelf').html('Failed to retrieve data. Please check your API key and network connection.');
+        });
+    });
+    </script>
+</body>
+</html>
